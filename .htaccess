@@ -1,0 +1,14 @@
+# Enable the rewrite engine
+RewriteEngine On
+
+#Version control
+RewriteRule ^(.+)_v[0-9]+\.(js|css)$ $1.$2 [QSA,L]
+
+# If the requested resource is not a directory
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# If the requested resource is not a file
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Rewrite all other requests to index.php, appending query string parameters and marking this as the last rule
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]

@@ -1,0 +1,25 @@
+<?php
+
+// Define an array of routes for the application
+$routes = [
+    // Route for the home page, maps to the 'index' method of 'BookController'
+    '' => ['controller' => 'App\\Controllers\\HomeController', 'method' => 'index'],
+
+    // Route for the books list page, maps to the 'index' method of 'BookController'
+    'auth/login' => ['controller' => 'App\\Controllers\\AuthController', 'method' => 'login'],
+
+    // Route for Google login, maps to the 'loginWithGoogle' method of 'AuthController'
+    'auth/google-login' => ['controller' => 'App\\Controllers\\AuthController', 'method' => 'loginWithGoogle'],
+
+    // Route for Google callback, maps to the 'callback' method of 'AuthController'
+    'auth/google-login-callback' => ['controller' => 'App\\Controllers\\AuthController', 'method' => 'callback'],
+
+    // Route for adding a new post, maps to the 'addNewPost' method of 'PostController'
+    'dashboard' => ['controller' => 'App\\Controllers\\PostController', 'method' => 'index'],
+
+    // Route for adding a new post, maps to the 'addNewPost' method of 'PostController'
+    'dashboard/create-post' => ['controller' => 'App\\Controllers\\PostController', 'method' => 'addNewPost'],
+
+    // Route for updating a book, maps to the 'update' method of 'BookController'
+    '404' => ['controller' => 'App\\Controllers\\NotFoundController', 'method' => 'index']
+];

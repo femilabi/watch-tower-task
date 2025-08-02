@@ -1,0 +1,1 @@
+.ad-container{background-color:#0000000d;display:flex;justify-content:center;align-items:center}.ad-container:before{content:"Ad";font-size:32px;font-weight:700}.ad-container.long{min-height:318px}.ad-container.box{min-height:339px}.ad-container.tall{min-width:160px;height:600px}
