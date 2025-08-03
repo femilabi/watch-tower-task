@@ -42,6 +42,7 @@ Example `.htaccess` content:
 
 ```apache_conf
 RewriteEngine On
+RewriteRule ^(.+)_v[0-9]+\.(js|css)$ $1.$2 [QSA,L]
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
