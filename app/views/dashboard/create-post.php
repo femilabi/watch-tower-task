@@ -335,7 +335,7 @@
         <div id="payment-wrapper"></div>
       </section>
       <!-- <button class="dynamic-button clickable" style="background-color: yellowgreen">Publish</button> -->
-      <!-- <button class="open-pay-publish clickable" type="submit">Publish</button> -->
+      <button class="open-pay-publish clickable" type="submit">Publish</button>
     </form>
     <div role="dialog" aria-label="image edit workspace" id="image-edit" class="overflow" data-modal-element="true"
       data-dismissable="false" data-modal-title="

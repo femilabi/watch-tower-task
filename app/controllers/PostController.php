@@ -28,7 +28,9 @@ class PostController extends Controller
         }
 
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $post_data = json_encode($_POST);
+            // Validate input data
+            // 
+            $post_data = $_POST;
             $this->loadModel('Post')->addPost($USER["id"], $post_data);
             header('Location: ' . BASE_URL . 'dashboard/posts');
             exit;
@@ -73,7 +75,7 @@ class PostController extends Controller
             $allowedTypes = ['jpg', 'png', 'jpeg'];
             if (!in_array($fileType, $allowedTypes)) {
                 $uploadOk = 0;
-                $error = 'Sorry, only JPG, JPEG, PNG, GIF, PDF & TXT files are allowed.';
+                $error = 'Sorry, only JPG, JPEG, PNG are allowed.';
             }
 
             if ($uploadOk && move_uploaded_file($_FILES['file']['tmp_name'], $targetFile)) {
