@@ -70,7 +70,7 @@ class PostController extends Controller
             $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
             // Allow certain file formats (add more as needed)
-            $allowedTypes = ['jpg', 'png', 'jpeg', 'gif', 'pdf', 'txt'];
+            $allowedTypes = ['jpg', 'png', 'jpeg'];
             if (!in_array($fileType, $allowedTypes)) {
                 $uploadOk = 0;
                 $error = 'Sorry, only JPG, JPEG, PNG, GIF, PDF & TXT files are allowed.';
