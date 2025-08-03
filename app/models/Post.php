@@ -93,7 +93,7 @@ class Post
         //recalculate or return
         if ($exists) {
             if ($prefered_suffix && !(strlen($slug) > strlen($prefered_suffix) && substr($slug, -(strlen($prefered_suffix) + 1)) == '-' . $prefered_suffix))
-                return self::verifySlug($slug . '-' . $prefered_suffix);
+                return $this->verifySlug($slug . '-' . $prefered_suffix);
             if (strpos($slug, '-') === false) {
                 $slug .= '-1';
             } else {
@@ -107,7 +107,7 @@ class Post
                     $slug .= '-1';
                 }
             }
-            return self::verifySlug($slug);
+            return $this->verifySlug($slug);
         }
         return $slug;
     }

@@ -196,7 +196,7 @@
         <label class="slug-url">
           <div class="field-title">Slug URL</div>
           <div class="slug-field">
-            <span>www.filmdistrictdubai.com/</span>
+            <span><?= BASE_URL ?></span>
             <input type="text" value="" readonly />
           </div>
         </label>
@@ -259,7 +259,7 @@
             <header>
               <span class="field-title">Blog category</span>
             </header>
-            <div class="custom-select" data-default-value="ai" data-name="post_category">
+            <div class="custom-select" data-default-value="1" data-name="post_category">
               <?php foreach ($categories as $category) { ?>
                 <div data-value="<?= $category['cate_id'] ?>"><?= $category['cate_name'] ?></div>
               <?php } ?>
@@ -322,7 +322,8 @@
             <header>
               <span class="field-title">Blog author</span>
             </header>
-            <input type="text" name="blog_author" readonly />
+            <input type="text" name="blog_author" value="<?= $user["first_name"] ?> <?= $user["last_name"] ?>"
+              readonly />
           </label>
           <label class="field-item">
             <header>
@@ -333,7 +334,8 @@
         </section>
         <div id="payment-wrapper"></div>
       </section>
-      <button class="open-pay-publish clickable">Publish</button>
+      <!-- <button class="dynamic-button clickable" style="background-color: yellowgreen">Publish</button> -->
+      <!-- <button class="open-pay-publish clickable" type="submit">Publish</button> -->
     </form>
     <div role="dialog" aria-label="image edit workspace" id="image-edit" class="overflow" data-modal-element="true"
       data-dismissable="false" data-modal-title="
@@ -443,6 +445,14 @@
     data-sdk-integration-source="integrationbuilder_sc"></script>
 
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.open-pay-publish').forEach(function (btn) {
+        console.log(btn);
+        btn.removeAttribute('disabled');
+      });
+    });
+  </script>
 </body>
 
 </html>
