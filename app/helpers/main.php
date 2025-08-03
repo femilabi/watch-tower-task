@@ -71,6 +71,7 @@ function uploadFile($fileKey, $targetBucket = 'general', $allowedTypes = ['jpg',
 		mkdir($targetDir, 0777, true);
 	}
 	$fileName = basename($_FILES[$fileKey]['name']);
+	$targetFileName = generateFileName($fileName);
 	$targetFile = $targetDir . generateFileName($fileName);
 	$uploadOk = 1;
 	$fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
@@ -78,13 +79,13 @@ function uploadFile($fileKey, $targetBucket = 'general', $allowedTypes = ['jpg',
 	// Allow certain file formats (add more as needed)
 	if (!in_array($fileType, $allowedTypes)) {
 		$uploadOk = 0;
-		$error = "Sorry, only " . implode(", ", $allowedTypes) . " are allowed.";
+		$error = 'Sorry, only ' . implode(', ', $allowedTypes) . ' are allowed.';
 	}
 
 	if ($uploadOk && move_uploaded_file($_FILES[$fileKey]['tmp_name'], $targetFile)) {
 		return [
 			'success' => 'The file ' . htmlspecialchars($fileName) . ' has been uploaded.',
-			'file_path' => BASE_URL . 'uploads/' . $fileName // Return the file path for further use
+			'file_path' => BASE_URL . 'uploads/' . $targetBucket . '/' . $targetFileName // Return the file path for further use
 		];
 	} else {
 		return [
@@ -92,7 +93,6 @@ function uploadFile($fileKey, $targetBucket = 'general', $allowedTypes = ['jpg',
 		];
 	}
 }
-
 function generateFileName($fileName)
 {
 	// Generate a unique file name based on the current timestamp and the original file name
@@ -142,4 +142,12 @@ function purifyHtml($html)
 
 	// Purify the HTML content
 	return @$purifier->purify($html);
+}
+
+function getCurrentUrl(): string {
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+    $host     = $_SERVER['HTTP_HOST'];
+    $uri      = $_SERVER['REQUEST_URI'];
+
+    return $protocol . $host . $uri;
 }

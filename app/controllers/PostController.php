@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Core\Auth;
 use App\Models\User;
+use function App\Helpers\getCurrentUrl;
 use function App\Helpers\uploadFile;
 
 class PostController extends Controller
@@ -29,16 +30,18 @@ class PostController extends Controller
             header('Location: ' . BASE_URL);
             exit;
         }
+        $this->setLayout('dashboard/create-post'); // Set the layout for create post
 
         // Check if the form is submitted
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            // Vaidate post inputs
             $errors = $this->validatePostInput($_POST);
             if (isset($errors['errors'])) {
                 // If there are validation errors, render the create post view with errors
-                $this->renderView('dashboard/create-post', ['user' => $USER, 'errors' => $errors['errors']], "Dashboard - Create Post");
-                return;
+                header('Location: ' . getCurrentUrl() . '?errors=' . urlencode(json_encode($errors['errors'])));
+                exit;
             }
-            
+
             $post_data = $_POST;
             $post_data["post_image"] = "";
 
@@ -47,18 +50,17 @@ class PostController extends Controller
                 $upload_result = uploadFile("cover_image", "posts");
                 if (!(isset($upload_result['success']))) {
                     // Handle upload error
-                    $this->renderView('dashboard/create-post', ['user' => $USER, 'error' => $upload_result['error'] ?? "File upload failed."], "Dashboard - Create Post");
-                    return;
+                    header('Location: ' . getCurrentUrl() . '?error=' . urlencode($upload_result['error'] ?? 'File upload failed.'));
+                    exit;
                 }
                 $post_data["post_image"] = $upload_result['file_path'];
             }
             $this->loadModel('Post')->addNewPost($USER["id"], $post_data);
-            header('Location: ' . BASE_URL . 'dashboard/posts');
+            header('Location: ' . BASE_URL);
             exit;
         }
 
         $categories = $this->loadModel('Post')->getAllCategories();
-        $this->setLayout('dashboard/create-post'); // Set the layout for create post
         $this->renderView('', ["user" => $USER, "categories" => $categories], "Dashboard - Create Post");
     }
 
