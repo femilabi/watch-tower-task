@@ -107,6 +107,9 @@ function purifyHtml($html)
 	$config = \HTMLPurifier_Config::createDefault();
 	// Allow some safe inline styles and tags
 	$config->set('HTML.Allowed', 'p,b,strong,i,em,ul,ol,li,br,span,div,blockquote,h1,h2,h3,h4,h5,h6,hr,pre,code');
+	$config->set('HTML.AllowedAttributes', 'style');
+
+	// Allow safe inline CSS properties
 	$config->set('CSS.AllowedProperties', [
 		'color',
 		'background-color',
@@ -127,16 +130,11 @@ function purifyHtml($html)
 		'max-width',
 		'min-width',
 		'max-height',
-		'min-height'
+		'min-height',
 	]);
-	$config->set('HTML.AllowStyles', true);
-	$config->set('Attr.AllowedFrameTargets', []); // remove target if needed
 
-	// Remove script, link, iframe etc.
-	$config->set('HTML.SafeObject', false);
-	$config->set('HTML.SafeEmbed', false);
-	$config->set('HTML.SafeIframe', false);
-	$config->set('URI.DisableJavaScript', true);
+	// Optional: prevent JS events like onclick
+	$config->set('Attr.ForbiddenPatterns', ['/^on.*/i']);
 
 	$purifier = new \HTMLPurifier($config);
 
