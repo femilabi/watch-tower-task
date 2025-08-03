@@ -8,7 +8,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $token_data = $this->requireAuth();
+        $token_data = Auth::check();
         $USER = (new User())->getUserById($token_data->id);
         if (!$USER) {
             header('Location: ' . BASE_URL);
@@ -50,7 +50,7 @@ class PostController extends Controller
 
     public function getPosts()
     {
-        $token_data = $this->requireAuth();
+        $token_data = Auth::check();
         $USER = (new User())->getUserById($token_data->id);
         if (!$USER) {
             header('Location: ' . BASE_URL . 'dashboard/');
@@ -61,7 +61,7 @@ class PostController extends Controller
         $this->renderView('dashboard/posts', ['user' => $USER, 'posts' => $posts], "Dashboard - Posts");
     }
     
-    public function upload() {
+    private function upload() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
             $targetDir = __DIR__ . '/../uploads/';
             if (!is_dir($targetDir)) {
