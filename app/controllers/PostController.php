@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Core\Auth;
 use App\Models\User;
 class PostController extends Controller
 {
@@ -20,7 +21,7 @@ class PostController extends Controller
     }
     public function addNewPost()
     {
-        $token_data = $this->requireAuth();
+        $token_data = Auth::check();
         $USER = (new User())->getUserById($token_data->id);
         if (!$USER) {
             header('Location: ' . BASE_URL);

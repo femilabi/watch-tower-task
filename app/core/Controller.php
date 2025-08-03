@@ -28,18 +28,6 @@ class Controller
         // Include the layout file from the views directory
         require_once "app/views/" . $this->layout . ".php";
     }
-
-    protected function requireAuth()
-    {
-        $token = $_COOKIE['token'] ?? null;
-        $token_data = $token ? JWT::verify($token) : null;
-        if (!$token_data) {
-            header("Location: " . BASE_URL);
-            exit;
-        }
-
-        return $token_data;
-    }
     
     protected function setLayout($layout) {
         $this->layout = $layout;

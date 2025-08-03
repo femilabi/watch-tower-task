@@ -70,7 +70,7 @@ class App
     }
 
     public static function redirectToLogin() {
-        header("Location: " . BASE_URL);
+        header("Location: " . BASE_URL . "auth/login");
         exit;
     }
 }

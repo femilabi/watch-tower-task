@@ -1,5 +1,5 @@
 <?php
-namespace App\Middleware;
+namespace App\Core;
 
 use App\Core\App;
 use App\Core\JWT;
