@@ -1,4 +1,6 @@
 <?php
+namespace App\Helpers;
+
 function isValidSlug($stext)
 {
 	//$rename = "/^([[:alnum:]]+[_\-]{0,1})+([[:alnum:]]+)$/i";
@@ -21,39 +23,30 @@ function post_slug($str)
 		remove_accent($str)
 	)));
 }
-
-function get_valid_table_slug($str, $table, $prefered_suffix = '')
+function getSlug($str, $table, $prefered_suffix = '')
 {
 	$slug = post_slug($str);
-	return verify_table_slug($slug, $table, $prefered_suffix);
+	return verifySlug($slug, $table, $prefered_suffix);
 }
 
-function verify_table_slug($slug, $tables, $prefered_suffix = '')
+function verifySlug($slug, $table, $prefered_suffix = '')
 {
-	global $slug_reserved_words;
-	if (!$slug || !$tables) return;
-	if (is_array($slug_reserved_words) && in_array($slug, $slug_reserved_words)) return;
+	if (!$slug)
+		return;
 	$exists = 0;
 
 	//check for existence
-	if (is_array($tables)) {
-		foreach ($tables as $table) {
-			$t = new DBRow($table, 'id');
-			$t->search('slug', $slug);
-			if ($t->exists()) {
-				$exists = 1;
-				break;
-			}
-		}
-	} else {
-		$t = new DBRow($tables, 'id');
-		$t->search('slug', $slug);
-		if ($t->exists()) $exists = 1;
-	}
+	$db = new \App\Core\Database();
+	$db->query("SELECT * FROM $table WHERE title_unique = :title_unique");
+	$db->bind(':title_unique', $slug);
+	$post = $db->result();
+	if ($post)
+		$exists = 1;
 
 	//recalculate or return
 	if ($exists) {
-		if ($prefered_suffix && !(strlen($slug) > strlen($prefered_suffix) && substr($slug, - (strlen($prefered_suffix) + 1)) == '-' . $prefered_suffix)) return verify_table_slug($slug . '-' . $prefered_suffix, $tables);
+		if ($prefered_suffix && !(strlen($slug) > strlen($prefered_suffix) && substr($slug, -(strlen($prefered_suffix) + 1)) == '-' . $prefered_suffix))
+			return verifySlug($slug . '-' . $prefered_suffix, $table);
 		if (strpos($slug, '-') === false) {
 			$slug .= '-1';
 		} else {
@@ -61,13 +54,92 @@ function verify_table_slug($slug, $tables, $prefered_suffix = '')
 			if (is_numeric($fragments[count($fragments) - 1])) {
 				$fragments[count($fragments) - 1] += 1;
 				$slug = implode('-', $fragments);
-				if ($fragments[count($fragments) - 1] > 99) $slug .= '-1';
+				if ($fragments[count($fragments) - 1] > 99)
+					$slug .= '-1';
 			} else {
 				$slug .= '-1';
 			}
 		}
-		return verify_table_slug($slug, $tables);
-	} else {
-		return $slug;
 	}
+	return $slug;
+}
+
+function uploadFile($fileKey, $targetBucket = 'general', $allowedTypes = ['jpg', 'png', 'jpeg'])
+{
+	$targetDir = __DIR__ . "/../uploads/$targetBucket/";
+	if (!is_dir($targetDir)) {
+		mkdir($targetDir, 0777, true);
+	}
+	$fileName = basename($_FILES[$fileKey]['name']);
+	$targetFile = $targetDir . generateFileName($fileName);
+	$uploadOk = 1;
+	$fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+	// Allow certain file formats (add more as needed)
+	if (!in_array($fileType, $allowedTypes)) {
+		$uploadOk = 0;
+		$error = "Sorry, only " . implode(", ", $allowedTypes) . " are allowed.";
+	}
+
+	if ($uploadOk && move_uploaded_file($_FILES[$fileKey]['tmp_name'], $targetFile)) {
+		return [
+			'success' => 'The file ' . htmlspecialchars($fileName) . ' has been uploaded.',
+			'file_path' => BASE_URL . 'uploads/' . $fileName // Return the file path for further use
+		];
+	} else {
+		return [
+			'error' => isset($error) ? $error : 'Sorry, there was an error uploading your file.'
+		];
+	}
+}
+
+function generateFileName($fileName)
+{
+	// Generate a unique file name based on the current timestamp and the original file name
+	$timestamp = time();
+	$fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+	return $timestamp . '-' . rand(100, 1000) . '.' . $fileExtension;
+}
+
+function purifyHtml($html)
+{
+	// Initialize HTML Purifier
+	$config = \HTMLPurifier_Config::createDefault();
+	// Allow some safe inline styles and tags
+	$config->set('HTML.Allowed', 'p,b,strong,i,em,ul,ol,li,br,span,div,blockquote,h1,h2,h3,h4,h5,h6,hr,pre,code');
+	$config->set('CSS.AllowedProperties', [
+		'color',
+		'background-color',
+		'font',
+		'font-size',
+		'font-weight',
+		'font-family',
+		'text-align',
+		'text-decoration',
+		'line-height',
+		'padding',
+		'margin',
+		'border',
+		'border-radius',
+		'width',
+		'height',
+		'display',
+		'max-width',
+		'min-width',
+		'max-height',
+		'min-height'
+	]);
+	$config->set('HTML.AllowStyles', true);
+	$config->set('Attr.AllowedFrameTargets', []); // remove target if needed
+
+	// Remove script, link, iframe etc.
+	$config->set('HTML.SafeObject', false);
+	$config->set('HTML.SafeEmbed', false);
+	$config->set('HTML.SafeIframe', false);
+	$config->set('URI.DisableJavaScript', true);
+
+	$purifier = new \HTMLPurifier($config);
+
+	// Purify the HTML content
+	return $purifier->purify($html);
 }

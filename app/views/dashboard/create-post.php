@@ -190,7 +190,7 @@
     </div>
   </header>
   <main>
-    <form class="page-content" action="<?= BASE_URL ?>app/viewsdashboard/create-post" method="POST"
+    <form id="post-form" class="page-content" action="<?= BASE_URL ?>dashboard/create-post" method="POST"
       enctype="multipart/form-data">
       <section class="main">
         <label class="slug-url">
@@ -315,7 +315,7 @@
                 <use href="<?= BASE_URL ?>app/views/assets/icons.svg#image" />
               </svg>
               <span>Upload</span>
-              <input type="file" name="cover-image-input" id="cover-image-input" />
+              <input type="file" name="cover_image" id="cover-image-input" />
             </label>
           </div>
           <label class="field-item">
@@ -332,11 +332,11 @@
             <input type="text" name="post_unique" readonly />
           </label>
         </section>
-        <div id="payment-wrapper"></div>
       </section>
-      <!-- <button class="dynamic-button clickable" style="background-color: yellowgreen">Publish</button> -->
-      <button class="open-pay-publish clickable" type="submit">Publish</button>
     </form>
+
+    <button id="publish-btn" class="publish-btn clickable" style="color: white; padding: 10px; background-color: red;">Publish</button>
+
     <div role="dialog" aria-label="image edit workspace" id="image-edit" class="overflow" data-modal-element="true"
       data-dismissable="false" data-modal-title="
       <svg width='24' height='24'>
@@ -440,16 +440,12 @@
         alt="crocodile holding a map" />
     </div>
   </main>
-  <script
-    src="https://www.paypal.com/sdk/js?client-id=AUv8rrc_P-EbP2E0mpb49BV7rFt3Usr-vdUZO8VGOnjRehGHBXkSzchr37SYF2GNdQFYSp72jh5QUhzG&components=buttons&enable-funding=venmo&disable-funding=paylater,card"
-    data-sdk-integration-source="integrationbuilder_sc"></script>
-
+  <script src="https://www.paypal.com/sdk/js?client-id=AUv8rrc_P-EbP2E0mpb49BV7rFt3Usr-vdUZO8VGOnjRehGHBXkSzchr37SYF2GNdQFYSp72jh5QUhzG&components=buttons&enable-funding=venmo&disable-funding=paylater,card" data-sdk-integration-source="integrationbuilder_sc"></script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      document.querySelectorAll('.open-pay-publish').forEach(function (btn) {
-        console.log(btn);
-        btn.removeAttribute('disabled');
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelector('#publish-btn').addEventListener('click', () => {
+        document.querySelector('#post-form').submit();
       });
     });
   </script>
