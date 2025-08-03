@@ -2,7 +2,7 @@
 namespace App\Models;
 use App\Core\Database;
 
-// Define a class named Book this will be the Book model
+// Define a class named Post this will be the Post model
 class Post
 {
 
@@ -16,7 +16,7 @@ class Post
         $this->db = new Database();
     }
 
-    // Method to retrieve all books from the database
+    // Method to retrieve all posts from the database
     public function getAllPostsByUserId($id)
     {
         // Prepare a SQL query to select all records from the post table
@@ -25,7 +25,7 @@ class Post
         return $this->db->results();
     }
 
-    // Method to add a new book to the database
+    // Method to add a new post to the database
     public function addNewPost($user_id, $post_data)
     {
         // Prepare a SQL query to insert a new record into the post table

@@ -5,7 +5,7 @@ namespace App\Core;
 class App
 {
     // Initialize default controller to be used
-    protected $controller = 'App\\Controllers\\BookController';
+    protected $controller = 'App\\Controllers\\HomeController';
 
     // Initialize default method to be called in the controller
     protected $method = 'index';
@@ -54,11 +54,6 @@ class App
         $this->controller = new $this->controller;
 
         // Call the method of the controller with the parameters
-        // --------------------------------------------------------------------------------------------------------------------
-        // call_user_func_array() is used to call a callback function with an array of parameters to be passed to the function
-        // Ex: call_user_func_array([BookController, updateBook], [$id])
-        // In the above example this function will call updateBook($id) method in BookController class
-        // --------------------------------------------------------------------------------------------------------------------
         call_user_func_array([$this->controller, $this->method], $this->params);
     }
 
