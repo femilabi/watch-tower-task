@@ -1,8 +1,7 @@
 <?php
 
-// Define an array of routes for the application
 $routes = [
-    // Route for the home page, maps to the 'index' method of 'BookController'
+    // Route for the home page, maps to the 'index' method of 'HomeController'
     '' => ['controller' => 'App\\Controllers\\HomeController', 'method' => 'index'],
 
     // Route for the books list page, maps to the 'index' method of 'BookController'
@@ -20,6 +19,6 @@ $routes = [
     // Route for adding a new post, maps to the 'addNewPost' method of 'PostController'
     'dashboard/create-post' => ['controller' => 'App\\Controllers\\PostController', 'method' => 'addNewPost'],
 
-    // Route for updating a book, maps to the 'update' method of 'BookController'
+    // Route for updating a book, maps to the 'update' method of 'HomeController'
     '404' => ['controller' => 'App\\Controllers\\NotFoundController', 'method' => 'index']
 ];

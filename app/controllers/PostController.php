@@ -18,7 +18,6 @@ class PostController extends Controller
         $this->setLayout('dashboard/index');
         $this->renderView('', ['user' => $USER, 'posts' => $posts], "Dashboard - Home");
     }
-
     public function addNewPost()
     {
         $token_data = $this->requireAuth();
@@ -57,5 +56,36 @@ class PostController extends Controller
 
         $posts = $this->loadModel('Post')->getAllPostsByUserId($USER->id);
         $this->renderView('dashboard/posts', ['user' => $USER, 'posts' => $posts], "Dashboard - Posts");
+    }
+    
+    public function upload() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
+            $targetDir = __DIR__ . '/../uploads/';
+            if (!is_dir($targetDir)) {
+                mkdir($targetDir, 0777, true);
+            }
+            $fileName = basename($_FILES['file']['name']);
+            $targetFile = $targetDir . $fileName;
+            $uploadOk = 1;
+            $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+            // Allow certain file formats (add more as needed)
+            $allowedTypes = ['jpg', 'png', 'jpeg', 'gif', 'pdf', 'txt'];
+            if (!in_array($fileType, $allowedTypes)) {
+                $uploadOk = 0;
+                $error = 'Sorry, only JPG, JPEG, PNG, GIF, PDF & TXT files are allowed.';
+            }
+
+            if ($uploadOk && move_uploaded_file($_FILES['file']['tmp_name'], $targetFile)) {
+                return [
+                    'success' => 'The file ' . htmlspecialchars($fileName) . ' has been uploaded.',
+                    'file_path' => BASE_URL . 'uploads/' . $fileName // Return the file path for further use
+                ];
+            } else {
+                return [
+                    'error' => isset($error) ? $error : 'Sorry, there was an error uploading your file.'
+                ];
+            }
+        }
     }
 }
