@@ -31,16 +31,15 @@ class Post
     public function addNewPost($user_id, $post_data)
     {
         // Prepare a SQL query to insert a new record into the post table
-        $this->db->query("INSERT INTO " . self::table . " (user_id, post_title, cate_id, reference, post_description, post_content) VALUES (:user_id, :post_title, :category_id, :reference, :post_description, :post_content)");
+        $this->db->query("INSERT INTO " . self::table . " (user_id, post_title, cate_id, reference, post_description, post_content, post_unique, post_image) VALUES (:user_id, :post_title, :cate_id, :reference, :post_description, :post_content, :post_unique, :post_image)");
         $this->db->bind(':user_id', $user_id);
-        $this->db->bind(':post_title', $post_data['title']);
-        $this->db->bind(':category_id', $post_data['category_id']);
+        $this->db->bind(':post_title', $post_data['post_title']);
+        $this->db->bind(':cate_id', $post_data['post_category']);
         $this->db->bind(':reference', 0);
-        $this->db->bind(':post_description', $post_data['description']);
-        $this->db->bind(':post_content', purifyHtml($post_data['post_content']));
+        $this->db->bind(':post_description', $post_data['post_description']);
+        $this->db->bind(':post_content', purifyHtml($post_data['content']));
         $this->db->bind(':post_unique', getSlug($post_data['post_title'], self::table));
         $this->db->bind(':post_image', $post_data['post_image']);
-        $this->db->bind(':post_status', "approved");
         $this->db->execute();
     }
     public function getAllCategories()

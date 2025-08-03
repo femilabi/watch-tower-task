@@ -37,8 +37,8 @@ function verifySlug($slug, $table, $prefered_suffix = '')
 
 	//check for existence
 	$db = new \App\Core\Database();
-	$db->query("SELECT * FROM $table WHERE title_unique = :title_unique");
-	$db->bind(':title_unique', $slug);
+	$db->query("SELECT * FROM $table WHERE post_unique = :post_unique");
+	$db->bind(':post_unique', $slug);
 	$post = $db->result();
 	if ($post)
 		$exists = 1;
@@ -106,10 +106,12 @@ function purifyHtml($html)
 	// Initialize HTML Purifier
 	$config = \HTMLPurifier_Config::createDefault();
 	// Allow some safe inline styles and tags
-	$config->set('HTML.Allowed', 'p,b,strong,i,em,ul,ol,li,br,span,div,blockquote,h1,h2,h3,h4,h5,h6,hr,pre,code');
-	$config->set('HTML.AllowedAttributes', 'style');
+	$config->set('HTML.Allowed', 'p,b,strong,i,em,ul,ol,li,br,span,div,blockquote,h1,h2,h3,h4,h5,h6,hr,pre,code,img');
 
-	// Allow safe inline CSS properties
+	// Allow inline styles and image attributes
+	$config->set('HTML.AllowedAttributes', 'style,src,alt,width,height');
+
+	// Allow safe CSS properties
 	$config->set('CSS.AllowedProperties', [
 		'color',
 		'background-color',
@@ -133,11 +135,11 @@ function purifyHtml($html)
 		'min-height',
 	]);
 
-	// Optional: prevent JS events like onclick
-	$config->set('Attr.ForbiddenPatterns', ['/^on.*/i']);
+	// Optional: disallow iframes (unless you explicitly allow them)
+	$config->set('HTML.SafeIframe', false);
 
 	$purifier = new \HTMLPurifier($config);
 
 	// Purify the HTML content
-	return $purifier->purify($html);
+	return @$purifier->purify($html);
 }
