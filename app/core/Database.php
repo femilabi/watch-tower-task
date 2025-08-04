@@ -81,4 +81,10 @@ class Database
         // Bind the value to the parameter
         $this->stmt->bindValue($param, $value);
     }
+
+    // Method to get the last inserted ID
+    public function lastInsertId()
+    {
+        return $this->dbh->lastInsertId();
+    }
 }

@@ -72,7 +72,7 @@ function uploadFile($fileKey, $targetBucket = 'general', $allowedTypes = ['jpg',
 	}
 	$fileName = basename($_FILES[$fileKey]['name']);
 	$targetFileName = generateFileName($fileName);
-	$targetFile = $targetDir . generateFileName($fileName);
+	$targetFile = $targetDir . $targetFileName;
 	$uploadOk = 1;
 	$fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
@@ -85,7 +85,7 @@ function uploadFile($fileKey, $targetBucket = 'general', $allowedTypes = ['jpg',
 	if ($uploadOk && move_uploaded_file($_FILES[$fileKey]['tmp_name'], $targetFile)) {
 		return [
 			'success' => 'The file ' . htmlspecialchars($fileName) . ' has been uploaded.',
-			'file_path' => BASE_URL . 'uploads/' . $targetBucket . '/' . $targetFileName // Return the file path for further use
+			'file_path' => BASE_URL . 'app/uploads/' . $targetBucket . '/' . $targetFileName // Return the file path for further use
 		];
 	} else {
 		return [
@@ -93,6 +93,7 @@ function uploadFile($fileKey, $targetBucket = 'general', $allowedTypes = ['jpg',
 		];
 	}
 }
+
 function generateFileName($fileName)
 {
 	// Generate a unique file name based on the current timestamp and the original file name
@@ -144,10 +145,11 @@ function purifyHtml($html)
 	return @$purifier->purify($html);
 }
 
-function getCurrentUrl(): string {
-    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
-    $host     = $_SERVER['HTTP_HOST'];
-    $uri      = $_SERVER['REQUEST_URI'];
+function getCurrentUrl(): string
+{
+	$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+	$host = $_SERVER['HTTP_HOST'];
+	$uri = $_SERVER['REQUEST_URI'];
 
-    return $protocol . $host . $uri;
+	return $protocol . $host . $uri;
 }

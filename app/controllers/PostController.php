@@ -55,7 +55,10 @@ class PostController extends Controller
                 }
                 $post_data["post_image"] = $upload_result['file_path'];
             }
-            $this->loadModel('Post')->addNewPost($USER["id"], $post_data);
+
+            // Save post data
+            $post_id = $this->loadModel('Post')->addNewPost($USER["id"], $post_data);
+
             header('Location: ' . BASE_URL);
             exit;
         }

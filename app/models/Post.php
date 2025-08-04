@@ -41,6 +41,7 @@ class Post
         $this->db->bind(':post_unique', getSlug($post_data['post_title'], self::table));
         $this->db->bind(':post_image', $post_data['post_image']);
         $this->db->execute();
+        return $this->db->lastInsertId();
     }
     public function getAllCategories()
     {
