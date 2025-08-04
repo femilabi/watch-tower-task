@@ -1,3 +1,7 @@
+<?php
+use function App\Helpers\timeAgo;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,18 +44,20 @@
     <section id="hero">
       <div class="container">
         <div class="featured">
-          <img src="<?= BASE_URL ?>app/views/images/blog-image.jpg" alt="" />
+          <img src="<?= @$trending_posts[0]["post_image"] ?>" alt="<?= @$trending_posts[0]["post_title"] ?>" />
           <header>
             <div class="view-count">
               <svg width="16" height="16">
                 <use href="<?= BASE_URL ?>app/views/assets/icons.svg#eye" />
               </svg>
               <div class="divider"></div>
-              <span>46,376 Views</span>
+              <span><?= number_format($trending_posts[0]["post_views"]) ?> Views</span>
             </div>
             <div class="author">
-              <img src="<?= BASE_URL ?>app/views/images/blog-image.jpg" alt="" width="32" height="32" />
-              <span>Daniella Farhat</span>
+              <img src="<?= @$trending_posts[0]["poster_avatar"] ?>"
+                alt="<?= @$trending_posts[0]["poster_firstname"] ?> <?= @$trending_posts[0]["poster_lastname"] ?>"
+                width="32" height="32" />
+              <span><?= @$trending_posts[0]["poster_firstname"] ?> <?= @$trending_posts[0]["poster_lastname"] ?></span>
             </div>
           </header>
           <div class="blog-details-wrapper">
@@ -60,9 +66,9 @@
                 <svg width="16" height="16">
                   <use href="<?= BASE_URL ?>app/views/assets/icons.svg#command" />
                 </svg>
-                <span>Lifestyle</span>
+                <span><?= @$trending_posts[0]["post_category_name"] ?></span>
               </header>
-              <h1>Why is Outlook not allowing me to attach files?</h1>
+              <h1><?= @$trending_posts[0]["post_title"] ?></h1>
               <a href="">
                 <span>Start Reading</span>
                 <svg width="16" height="16" viewBox="0 0 20 20">
@@ -72,291 +78,59 @@
             </div>
           </div>
         </div>
-        <div class="blog-item">
-          <div class="image-wrapper">
-            <img src="<?= BASE_URL ?>app/views/images/blog-image.jpg" alt="" width="323" height="166" />
-            <div class="time-category">
-              <span>11 Month ago</span>
-              <span>Life Style</span>
+        <?php for ($i = 1; $i < count($trending_posts); $i++):
+          $post = $trending_posts[$i];
+          ?>
+          <?php if ($i == 2): ?>
+            <div class="ad-container box"></div>
+          <?php endif ?>
+          <div class="blog-item">
+            <div class="image-wrapper">
+              <img src="<?= @$post["post_image"] ?>" alt="<?= @$post["post_title"] ?>" width="323" height="166" />
+              <div class="time-category">
+                <span><?= timeAgo($post["created_at"]) ?></span>
+                <span><?= @$post["post_category_name"] ?></span>
+              </div>
+            </div>
+            <div class="content">
+              <h2 class="line-clamp clamp-2">
+                <a href="<?= BASE_URL ?>post/<?= @$post["post_unique"] ?>"><?= @$post["post_title"] ?></a>
+              </h2>
+              <p class="line-clamp clamp-3">
+                <?= @$post["post_description"] ?>
+              </p>
             </div>
           </div>
-          <div class="content">
-            <h2 class="line-clamp clamp-2">
-              <a href="">Why is Outlook not allowing me to attach files?</a>
-            </h2>
-            <p class="line-clamp clamp-3">
-              Looking to boost your online presence? Consider Our Guest
-              Blogging and LinkBuilding Services. It's like having a spotlight
-              on your brand, drawing in potential customers and building
-              credibility.
-            </p>
-          </div>
-        </div>
-        <div class="ad-container box"></div>
-        <div class="blog-item">
-          <div class="image-wrapper">
-            <img src="<?= BASE_URL ?>app/views/images/blog-image.jpg" alt="" width="323" height="166" />
-            <div class="time-category">
-              <span>11 Month ago</span>
-              <span>Life Style</span>
-            </div>
-          </div>
-          <div class="content">
-            <h2 class="line-clamp clamp-2">
-              <a href="">Why is Outlook not allowing me to attach files?</a>
-            </h2>
-            <p class="line-clamp clamp-3">
-              Looking to boost your online presence? Consider Our Guest
-              Blogging and LinkBuilding Services. It's like having a spotlight
-              on your brand, drawing in potential customers and building
-              credibility.
-            </p>
-          </div>
-        </div>
-        <div class="blog-item">
-          <div class="image-wrapper">
-            <img src="<?= BASE_URL ?>app/views/images/blog-image.jpg" alt="" width="323" height="166" />
-            <div class="time-category">
-              <span>11 Month ago</span>
-              <span>Life Style</span>
-            </div>
-          </div>
-          <div class="content">
-            <h2 class="line-clamp clamp-2">
-              <a href="">Why is Outlook not allowing me to attach files?</a>
-            </h2>
-            <p class="line-clamp clamp-3">
-              Looking to boost your online presence? Consider Our Guest
-              Blogging and LinkBuilding Services. It's like having a spotlight
-              on your brand, drawing in potential customers and building
-              credibility.
-            </p>
-          </div>
-        </div>
+        <?php endfor; ?>
       </div>
     </section>
     <section id="blog-cards">
       <div class="container">
         <div class="blog-cards">
-          <div class="blog-card-item">
-            <img src="<?= BASE_URL ?>app/views/images/blog-image.jpg" alt="" width="244" height="244" />
-            <div class="content">
-              <header>
-                <svg width="16" height="16">
-                  <use href="<?= BASE_URL ?>app/views/assets/icons.svg#command" />
-                </svg>
-                <span>Lifestyle</span>
-              </header>
-              <h2 class="line-clamp clamp-2">
-                <a href="">Life Style Key Martech Trends Shaping the Future of Digital
-                  Marketing Looking to boost your online presence? Consider
-                  Our Guest Blogging and LinkBuilding Services. It's like
-                  having a spotlight on your brand, drawing in potential
-                  customers and building credibility.</a>
-              </h2>
-              <p class="line-clamp clamp-3">
-                Looking to boost your online presence? Consider Our Guest
-                Blogging and LinkBuilding Services. It's like having a
-                spotlight on your brand, drawing in potential customers and
-                building credibility.
-              </p>
+          <?php for ($i = 1; $i < count($latest_posts); $i++): ?>
+            <div class="blog-card-item">
+              <img src="<?= @$latest_posts[$i]["post_image"] ?>" alt="<?= @$latest_posts[$i]["post_title"] ?>" width="244"
+                height="244" />
+              <div class="content">
+                <header>
+                  <svg width="16" height="16">
+                    <use href="<?= BASE_URL ?>app/views/assets/icons.svg#command" />
+                  </svg>
+                  <span><?= @$latest_posts[$i]["post_category_name"] ?></span>
+                </header>
+                <h2 class="line-clamp clamp-2">
+                  <a
+                    href="<?= BASE_URL ?>post/<?= @$latest_posts[$i]["post_unique"] ?>"><?= @$latest_posts[$i]["post_title"] ?></a>
+                </h2>
+                <p class="line-clamp clamp-3">
+                  <?= @$latest_posts[$i]["post_description"] ?>
+                </p>
+              </div>
             </div>
-          </div>
-          <div class="blog-card-item">
-            <img src="<?= BASE_URL ?>app/views/images/blog-image.jpg" alt="" width="244" height="244" />
-            <div class="content">
-              <header>
-                <svg width="16" height="16">
-                  <use href="<?= BASE_URL ?>app/views/assets/icons.svg#command" />
-                </svg>
-                <span>Lifestyle</span>
-              </header>
-              <h2 class="line-clamp clamp-2">
-                <a href="">Life Style Key Martech Trends Shaping the Future of Digital
-                  Marketing Looking to boost your online presence? Consider
-                  Our Guest Blogging and LinkBuilding Services. It's like
-                  having a spotlight on your brand, drawing in potential
-                  customers and building credibility.</a>
-              </h2>
-              <p class="line-clamp clamp-3">
-                Looking to boost your online presence? Consider Our Guest
-                Blogging and LinkBuilding Services. It's like having a
-                spotlight on your brand, drawing in potential customers and
-                building credibility.
-              </p>
-            </div>
-          </div>
-          <div class="blog-card-item">
-            <img src="<?= BASE_URL ?>app/views/images/blog-image.jpg" alt="" width="244" height="244" />
-            <div class="content">
-              <header>
-                <svg width="16" height="16">
-                  <use href="<?= BASE_URL ?>app/views/assets/icons.svg#command" />
-                </svg>
-                <span>Lifestyle</span>
-              </header>
-              <h2 class="line-clamp clamp-2">
-                <a href="">Life Style Key Martech Trends Shaping the Future of Digital
-                  Marketing Looking to boost your online presence? Consider
-                  Our Guest Blogging and LinkBuilding Services. It's like
-                  having a spotlight on your brand, drawing in potential
-                  customers and building credibility.</a>
-              </h2>
-              <p class="line-clamp clamp-3">
-                Looking to boost your online presence? Consider Our Guest
-                Blogging and LinkBuilding Services. It's like having a
-                spotlight on your brand, drawing in potential customers and
-                building credibility.
-              </p>
-            </div>
-          </div>
-          <div class="ad-container long"></div>
-          <div class="blog-card-item">
-            <img src="<?= BASE_URL ?>app/views/images/blog-image.jpg" alt="" width="244" height="244" />
-            <div class="content">
-              <header>
-                <svg width="16" height="16">
-                  <use href="<?= BASE_URL ?>app/views/assets/icons.svg#command" />
-                </svg>
-                <span>Lifestyle</span>
-              </header>
-              <h2 class="line-clamp clamp-2">
-                <a href="">Life Style Key Martech Trends Shaping the Future of Digital
-                  Marketing Looking to boost your online presence? Consider
-                  Our Guest Blogging and LinkBuilding Services. It's like
-                  having a spotlight on your brand, drawing in potential
-                  customers and building credibility.</a>
-              </h2>
-              <p class="line-clamp clamp-3">
-                Looking to boost your online presence? Consider Our Guest
-                Blogging and LinkBuilding Services. It's like having a
-                spotlight on your brand, drawing in potential customers and
-                building credibility.
-              </p>
-            </div>
-          </div>
-          <div class="blog-card-item">
-            <img src="<?= BASE_URL ?>app/views/images/blog-image.jpg" alt="" width="244" height="244" />
-            <div class="content">
-              <header>
-                <svg width="16" height="16">
-                  <use href="<?= BASE_URL ?>app/views/assets/icons.svg#command" />
-                </svg>
-                <span>Lifestyle</span>
-              </header>
-              <h2 class="line-clamp clamp-2">
-                <a href="">Life Style Key Martech Trends Shaping the Future of Digital
-                  Marketing Looking to boost your online presence? Consider
-                  Our Guest Blogging and LinkBuilding Services. It's like
-                  having a spotlight on your brand, drawing in potential
-                  customers and building credibility.</a>
-              </h2>
-              <p class="line-clamp clamp-3">
-                Looking to boost your online presence? Consider Our Guest
-                Blogging and LinkBuilding Services. It's like having a
-                spotlight on your brand, drawing in potential customers and
-                building credibility.
-              </p>
-            </div>
-          </div>
-          <div class="blog-card-item">
-            <img src="<?= BASE_URL ?>app/views/images/blog-image.jpg" alt="" width="244" height="244" />
-            <div class="content">
-              <header>
-                <svg width="16" height="16">
-                  <use href="<?= BASE_URL ?>app/views/assets/icons.svg#command" />
-                </svg>
-                <span>Lifestyle</span>
-              </header>
-              <h2 class="line-clamp clamp-2">
-                <a href="">Life Style Key Martech Trends Shaping the Future of Digital
-                  Marketing Looking to boost your online presence? Consider
-                  Our Guest Blogging and LinkBuilding Services. It's like
-                  having a spotlight on your brand, drawing in potential
-                  customers and building credibility.</a>
-              </h2>
-              <p class="line-clamp clamp-3">
-                Looking to boost your online presence? Consider Our Guest
-                Blogging and LinkBuilding Services. It's like having a
-                spotlight on your brand, drawing in potential customers and
-                building credibility.
-              </p>
-            </div>
-          </div>
-          <div class="ad-container long"></div>
-          <div class="blog-card-item">
-            <img src="<?= BASE_URL ?>app/views/images/blog-image.jpg" alt="" width="244" height="244" />
-            <div class="content">
-              <header>
-                <svg width="16" height="16">
-                  <use href="<?= BASE_URL ?>app/views/assets/icons.svg#command" />
-                </svg>
-                <span>Lifestyle</span>
-              </header>
-              <h2 class="line-clamp clamp-2">
-                <a href="">Life Style Key Martech Trends Shaping the Future of Digital
-                  Marketing Looking to boost your online presence? Consider
-                  Our Guest Blogging and LinkBuilding Services. It's like
-                  having a spotlight on your brand, drawing in potential
-                  customers and building credibility.</a>
-              </h2>
-              <p class="line-clamp clamp-3">
-                Looking to boost your online presence? Consider Our Guest
-                Blogging and LinkBuilding Services. It's like having a
-                spotlight on your brand, drawing in potential customers and
-                building credibility.
-              </p>
-            </div>
-          </div>
-          <div class="blog-card-item">
-            <img src="<?= BASE_URL ?>app/views/images/blog-image.jpg" alt="" width="244" height="244" />
-            <div class="content">
-              <header>
-                <svg width="16" height="16">
-                  <use href="<?= BASE_URL ?>app/views/assets/icons.svg#command" />
-                </svg>
-                <span>Lifestyle</span>
-              </header>
-              <h2 class="line-clamp clamp-2">
-                <a href="">Life Style Key Martech Trends Shaping the Future of Digital
-                  Marketing Looking to boost your online presence? Consider
-                  Our Guest Blogging and LinkBuilding Services. It's like
-                  having a spotlight on your brand, drawing in potential
-                  customers and building credibility.</a>
-              </h2>
-              <p class="line-clamp clamp-3">
-                Looking to boost your online presence? Consider Our Guest
-                Blogging and LinkBuilding Services. It's like having a
-                spotlight on your brand, drawing in potential customers and
-                building credibility.
-              </p>
-            </div>
-          </div>
-          <div class="blog-card-item">
-            <img src="<?= BASE_URL ?>app/views/images/blog-image.jpg" alt="" width="244" height="244" />
-            <div class="content">
-              <header>
-                <svg width="16" height="16">
-                  <use href="<?= BASE_URL ?>app/views/assets/icons.svg#command" />
-                </svg>
-                <span>Lifestyle</span>
-              </header>
-              <h2 class="line-clamp clamp-2">
-                <a href="">Life Style Key Martech Trends Shaping the Future of Digital
-                  Marketing Looking to boost your online presence? Consider
-                  Our Guest Blogging and LinkBuilding Services. It's like
-                  having a spotlight on your brand, drawing in potential
-                  customers and building credibility.</a>
-              </h2>
-              <p class="line-clamp clamp-3">
-                Looking to boost your online presence? Consider Our Guest
-                Blogging and LinkBuilding Services. It's like having a
-                spotlight on your brand, drawing in potential customers and
-                building credibility.
-              </p>
-            </div>
-          </div>
-          <div class="ad-container long"></div>
+            <?php if ($i % 3 == 0 && $i < count($latest_posts) - 1): ?>
+              <div class="ad-container long"></div>
+            <?php endif; ?>
+          <?php endfor; ?>
         </div>
         <div class="ad-containers">
           <div class="ad-wrapper">

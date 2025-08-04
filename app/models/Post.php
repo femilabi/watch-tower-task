@@ -1,8 +1,7 @@
 <?php
 namespace App\Models;
 use App\Core\Database;
-use function App\Helpers\getSlug;
-use function App\Helpers\purifyHtml;
+use App\Models\User;
 
 // Define a class named Post this will be the Post model
 class Post
@@ -37,7 +36,7 @@ class Post
         $this->db->bind(':cate_id', $post_data['post_category']);
         $this->db->bind(':reference', 0);
         $this->db->bind(':post_description', $post_data['post_description']);
-        $this->db->bind(':post_content',$post_data['content']);
+        $this->db->bind(':post_content', $post_data['content']);
         $this->db->bind(':post_unique', $post_data['post_unique']);
         $this->db->bind(':post_image', $post_data['post_image']);
         $this->db->execute();
@@ -47,6 +46,42 @@ class Post
     {
         // Prepare a SQL query to select all records from the category table
         $this->db->query("SELECT * FROM post_category WHERE is_active = true");
+        return $this->db->results();
+    }
+
+    public function getTrendingPosts()
+    {
+        // Prepare a SQL query to select all records from the post table
+        $this->db->query(
+            "SELECT 
+                p.*, 
+                u.first_name AS poster_firstname,
+                u.last_name AS poster_lastname,
+                u.avatar AS poster_avatar,
+                pc.cate_name AS post_category_name
+            FROM " . self::table . " p
+            LEFT JOIN " . User::table . " u ON u.id = p.user_id
+            LEFT JOIN post_category pc ON pc.cate_id = p.cate_id 
+            ORDER BY post_views DESC LIMIT 4"
+        );
+        return $this->db->results();
+    }
+
+    public function getLatestPosts()
+    {
+        // Prepare a SQL query to select all records from the post table
+        $this->db->query(
+            "SELECT 
+                p.*, 
+                u.first_name AS poster_firstname,
+                u.last_name AS poster_lastname,
+                u.avatar AS poster_avatar,
+                pc.cate_name AS post_category_name
+            FROM posts p
+            LEFT JOIN " . User::table . " u ON u.id = p.user_id
+            LEFT JOIN post_category pc ON pc.cate_id = p.cate_id 
+            ORDER BY created_at DESC LIMIT 12"
+        );
         return $this->db->results();
     }
 }
