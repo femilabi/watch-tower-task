@@ -35,13 +35,13 @@ class PostController extends Controller
         // Check if the form is submitted
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             // Vaidate post inputs
-            $valid_input = $this->validatePostInput($_POST);
-            if (isset($valid_input['errors'])) {
+            $validation = $this->validatePostInput($_POST);
+            if (isset($validation['errors'])) {
                 // If there are validation errors, render the create post view with errors
-                header('Location: ' . getCurrentUrl() . '?errors=' . urlencode(json_encode($valid_input['errors'])));
+                header('Location: ' . getCurrentUrl() . '?errors=' . urlencode(json_encode($validation['errors'])));
                 exit;
             }
-            $valid_input["post_image"] = "";
+            $validation["post_image"] = "";
 
             // Handle file upload if cover_image is set
             if (isset($_FILES['cover_image'])) {
@@ -51,14 +51,14 @@ class PostController extends Controller
                     header('Location: ' . getCurrentUrl() . '?error=' . urlencode($upload_result['error'] ?? 'File upload failed.'));
                     exit;
                 }
-                $valid_input["post_image"] = $upload_result['file_path'];
+                $validation["post_image"] = $upload_result['file_path'];
             }
 
             // Save post data
-            $post_id = $this->loadModel('Post')->addNewPost($USER["id"], $valid_input);
+            $post_id = $this->loadModel('Post')->addNewPost($USER["id"], $validation["data"]);
 
             // Create post meta
-            $this->loadModel('PostMeta')->addPostMeta($post_id, $valid_input);
+            $this->loadModel('PostMeta')->addPostMeta($post_id, $validation["data"]);
 
             header('Location: ' . BASE_URL);
             exit;
