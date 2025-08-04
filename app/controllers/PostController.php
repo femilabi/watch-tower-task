@@ -77,7 +77,7 @@ class PostController extends Controller
     public function getPosts()
     {
         $token_data = Auth::check();
-        $USER = (new User())->getUserById($token_data->id);
+        $USER = (new User())->getUserById($token_data->id) ?? null;
         if (!$USER) {
             header('Location: ' . BASE_URL . 'dashboard/');
             exit;
