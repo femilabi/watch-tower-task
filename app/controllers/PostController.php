@@ -59,6 +59,9 @@ class PostController extends Controller
             // Save post data
             $post_id = $this->loadModel('Post')->addNewPost($USER["id"], $post_data);
 
+            // Create post meta
+            $this->loadModel('PostMeta')->addPostMeta($post_id, $post_data);
+
             header('Location: ' . BASE_URL);
             exit;
         }

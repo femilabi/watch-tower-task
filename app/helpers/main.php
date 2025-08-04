@@ -60,8 +60,65 @@ function verifySlug($slug, $table, $prefered_suffix = '')
 				$slug .= '-1';
 			}
 		}
+		return verifySlug($slug, $table);
+	} else {
+		return $slug;
 	}
-	return $slug;
+}
+
+
+function get_valid_table_slug($str, $table, $prefered_suffix = '')
+{
+	$slug = post_slug($str);
+	return verify_table_slug($slug, $table, $prefered_suffix);
+}
+function verify_table_slug($slug, $tables, $prefered_suffix = '')
+{
+	global $slug_reserved_words;
+	if (!$slug || !$tables)
+		return;
+	if (is_array($slug_reserved_words) && in_array($slug, $slug_reserved_words))
+		return;
+	$exists = 0;
+
+	//check for existence
+	if (is_array($tables)) {
+		foreach ($tables as $table) {
+			$t = new DBRow($table, 'id');
+			$t->search('slug', $slug);
+			if ($t->exists()) {
+				$exists = 1;
+				break;
+			}
+		}
+	} else {
+		$t = new DBRow($tables, 'id');
+		$t->search('slug', $slug);
+		if ($t->exists())
+			$exists = 1;
+	}
+
+	//recalculate or return
+	if ($exists) {
+		if ($prefered_suffix && !(strlen($slug) > strlen($prefered_suffix) && substr($slug, -(strlen($prefered_suffix) + 1)) == '-' . $prefered_suffix))
+			return verify_table_slug($slug . '-' . $prefered_suffix, $tables);
+		if (strpos($slug, '-') === false) {
+			$slug .= '-1';
+		} else {
+			$fragments = explode('-', $slug);
+			if (is_numeric($fragments[count($fragments) - 1])) {
+				$fragments[count($fragments) - 1] += 1;
+				$slug = implode('-', $fragments);
+				if ($fragments[count($fragments) - 1] > 99)
+					$slug .= '-1';
+			} else {
+				$slug .= '-1';
+			}
+		}
+		return verify_table_slug($slug, $tables);
+	} else {
+		return $slug;
+	}
 }
 
 function uploadFile($fileKey, $targetBucket = 'general', $allowedTypes = ['jpg', 'png', 'jpeg'])

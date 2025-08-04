@@ -252,7 +252,7 @@
                 <p>0</p>
               </div>
               <div class="post-blog">
-                <a href="" class="clickable"><span>Create New</span></a>
+                <a href="<?= BASE_URL ?>dashboard/create-post" class="clickable"><span>Create New</span></a>
               </div>
               <div class="post-link">
                 <a href="" class="clickable">
