@@ -59,9 +59,7 @@ class AuthController extends Controller
         $userInfo = $oauth->userinfo->get();
 
         $userModel = $this->loadModel('User');
-        $userModel->findOrCreate($userInfo);
-
-        $user = $userModel->getUserByEmail($userInfo->email);
+        $user = $userModel->findOrCreate($userInfo);
         $jwt = JWT::create([
             'id' => $user['id'],
             'email' => $user['email']
