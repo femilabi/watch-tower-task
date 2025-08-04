@@ -2,8 +2,20 @@
 
 This project demonstrates a minimalist implementation of the Model-View-Controller (MVC) architecture in PHP. It is designed for learning and easy customization.
 
-## Configuration
 
+## Getting Started
+
+1. Clone or download this repository.
+2. Run `composer install` in the project root to install dependencies.
+3. (If you add or update classes, run `composer dump-autoload` to refresh autoload files.)
+4. Set up your database and update `config.php`.
+5. Ensure Apache mod_rewrite is enabled and `.htaccess` is configured.
+6. Place the project in your web server's document root (e.g., `htdocs` for XAMPP).
+7. Access the app at `http://localhost/watch-tower/`.
+
+---
+
+## Configuration
 
 ### config.php file
 
@@ -71,14 +83,6 @@ RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
 - **Model:** Handles data and business logic (see `app/models/`).
 - **View:** Responsible for UI and presentation (see `app/views/`).
 - **Controller:** Manages requests and coordinates between Model and View (see `app/controllers/`).
-
-## Getting Started
-
-1. Clone or download this repository.
-2. Set up your database and update `config.php`.
-3. Ensure Apache mod_rewrite is enabled and `.htaccess` is configured.
-4. Place the project in your web server's document root (e.g., `htdocs` for XAMPP).
-5. Access the app at `http://localhost/watch-tower/`.
 
 ---
 
