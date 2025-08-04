@@ -30,7 +30,9 @@ class User
             $this->db->bind(":lastname", $googleUser->familyName);
             $this->db->bind(":email", $googleUser->email);
             $this->db->bind(":avatar", $googleUser->picture);
-            $user = $this->db->result();
+            $this->db->execute();
+            $user_id = $this->db->lastInsertId();
+            $user = $this->getUserById($user_id);
         }
 
         return $user;
