@@ -37,8 +37,8 @@ class Post
         $this->db->bind(':cate_id', $post_data['post_category']);
         $this->db->bind(':reference', 0);
         $this->db->bind(':post_description', $post_data['post_description']);
-        $this->db->bind(':post_content', purifyHtml($post_data['content']));
-        $this->db->bind(':post_unique', getSlug($post_data['post_title'], self::table));
+        $this->db->bind(':post_content',$post_data['content']);
+        $this->db->bind(':post_unique', $post_data['post_unique']);
         $this->db->bind(':post_image', $post_data['post_image']);
         $this->db->execute();
         return $this->db->lastInsertId();

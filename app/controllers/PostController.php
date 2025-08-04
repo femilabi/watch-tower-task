@@ -5,6 +5,8 @@ use App\Core\Controller;
 use App\Core\Auth;
 use App\Models\User;
 use function App\Helpers\getCurrentUrl;
+use function App\Helpers\getSlug;
+use function App\Helpers\purifyHtml;
 use function App\Helpers\uploadFile;
 
 class PostController extends Controller
@@ -32,7 +34,6 @@ class PostController extends Controller
         }
         $this->setLayout('dashboard/create-post'); // Set the layout for create post
 
-        var_dump($_POST); exit;
         // Check if the form is submitted
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             // Vaidate post inputs
@@ -56,7 +57,8 @@ class PostController extends Controller
             }
 
             // Save post data
-            $validation["data"]["post_content"] = $_POST['content'];
+            $validation["data"]["content"] = purifyHtml($_POST['content']);
+            $validation["data"]["post_unique"] = getSlug($validation["data"]["post_title"], 'posts');
             $post_id = $this->loadModel('Post')->addNewPost($USER["id"], $validation["data"]);
 
             // Create post meta
