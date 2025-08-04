@@ -1,8 +1,6 @@
 <?php
 namespace App\Models;
 use App\Core\Database;
-use function App\Helpers\getSlug;
-use function App\Helpers\purifyHtml;
 
 // Define a class named Post this will be the Post model
 class PostMeta

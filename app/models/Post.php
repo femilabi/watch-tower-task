@@ -2,6 +2,7 @@
 namespace App\Models;
 use App\Core\Database;
 use App\Models\User;
+use App\Models\PostCategory;
 
 // Define a class named Post this will be the Post model
 class Post
@@ -45,7 +46,7 @@ class Post
     public function getAllCategories()
     {
         // Prepare a SQL query to select all records from the category table
-        $this->db->query("SELECT * FROM post_category WHERE is_active = true");
+        $this->db->query("SELECT * FROM " . PostCategory::table . " WHERE is_active = true");
         return $this->db->results();
     }
 
@@ -61,7 +62,7 @@ class Post
                 pc.cate_name AS post_category_name
             FROM " . self::table . " p
             LEFT JOIN " . User::table . " u ON u.id = p.user_id
-            LEFT JOIN post_category pc ON pc.cate_id = p.cate_id 
+            LEFT JOIN " . PostCategory::table . " pc ON pc.cate_id = p.cate_id 
             ORDER BY post_views DESC LIMIT 4"
         );
         return $this->db->results();
@@ -79,7 +80,7 @@ class Post
                 pc.cate_name AS post_category_name
             FROM posts p
             LEFT JOIN " . User::table . " u ON u.id = p.user_id
-            LEFT JOIN post_category pc ON pc.cate_id = p.cate_id 
+            LEFT JOIN " . PostCategory::table . " pc ON pc.cate_id = p.cate_id 
             ORDER BY created_at DESC LIMIT 12"
         );
         return $this->db->results();
