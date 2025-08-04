@@ -32,6 +32,7 @@ class PostController extends Controller
         }
         $this->setLayout('dashboard/create-post'); // Set the layout for create post
 
+        var_dump($_POST); exit;
         // Check if the form is submitted
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             // Vaidate post inputs
@@ -41,7 +42,7 @@ class PostController extends Controller
                 header('Location: ' . getCurrentUrl() . '?errors=' . urlencode(json_encode($validation['errors'])));
                 exit;
             }
-            $validation["post_image"] = "";
+            $validation["data"]["post_image"] = "";
 
             // Handle file upload if cover_image is set
             if (isset($_FILES['cover_image'])) {
@@ -51,10 +52,11 @@ class PostController extends Controller
                     header('Location: ' . getCurrentUrl() . '?error=' . urlencode($upload_result['error'] ?? 'File upload failed.'));
                     exit;
                 }
-                $validation["post_image"] = $upload_result['file_path'];
+                $validation["data"]["post_image"] = $upload_result['file_path'];
             }
 
             // Save post data
+            $validation["data"]["post_content"] = $_POST['content'];
             $post_id = $this->loadModel('Post')->addNewPost($USER["id"], $validation["data"]);
 
             // Create post meta
