@@ -63,7 +63,7 @@ RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
 ## Database Setup
 
 1. Create a MySQL database named `watch_tower` (or update the name in your config if different).
-2. Import your database schema and data as needed. (No `bookDB.sql` is provided; create tables for users, posts, etc. as required by your app.)
+2. Import your database schema and data as needed. (There is `watch_tower.sql` inside the app folder.)
 
 ## Project Structure
 
