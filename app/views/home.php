@@ -107,7 +107,7 @@ use function App\Helpers\timeAgo;
     <section id="blog-cards">
       <div class="container">
         <div class="blog-cards">
-          <?php for ($i = 1; $i < count($latest_posts); $i++): ?>
+          <?php for ($i = 0; $i < count($latest_posts); $i++): ?>
             <div class="blog-card-item">
               <img src="<?= @$latest_posts[$i]["post_image"] ?>" alt="<?= @$latest_posts[$i]["post_title"] ?>" width="244"
                 height="244" />
