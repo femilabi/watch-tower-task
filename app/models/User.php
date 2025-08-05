@@ -42,7 +42,8 @@ class User
     {
         $this->db->query("SELECT * FROM " . self::table . " WHERE id = :id");
         $this->db->bind(":id", $id);
-        return $this->db->result();
+        $result = $this->db->result();
+        return $result ? $result : null;
     }
     public function getUserByEmail($email)
     {
