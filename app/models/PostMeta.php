@@ -19,8 +19,8 @@ class PostMeta
     // Method to retrieve all posts from the database
     public function getPostMetas($post_id)
     {
-        // Prepare a SQL query to select all records from the post table
-        $this->db->query("SELECT * FROM " . self::table . " WHERE user_id = :post_id");
+        // Prepare a SQL query to select all records from the post meta table
+        $this->db->query("SELECT * FROM " . self::table . " WHERE post_id = :post_id");
         $this->db->bind(':post_id', $post_id);
         return $this->db->results();
     }

@@ -43,6 +43,14 @@ class PostController extends Controller
                 header('Location: ' . getCurrentUrl() . '?errors=' . urlencode(json_encode($validation['errors'])));
                 exit;
             }
+
+            // Check if post category is valid
+            $post_category = $this->loadModel("PostCategory")->getById($validation["data"]["post_category"]);
+            if (!$post_category) {
+                header('Location: ' . getCurrentUrl() . '?error=' . urlencode('Post category not found.'));
+                exit;
+            }
+
             $validation["data"]["post_image"] = "";
 
             // Handle file upload if cover_image is set

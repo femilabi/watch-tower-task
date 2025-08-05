@@ -78,7 +78,7 @@ class Post
                 u.last_name AS poster_lastname,
                 u.avatar AS poster_avatar,
                 pc.cate_name AS post_category_name
-            FROM posts p
+            FROM " . self::table . " p
             LEFT JOIN " . User::table . " u ON u.id = p.user_id
             LEFT JOIN " . PostCategory::table . " pc ON pc.cate_id = p.cate_id 
             ORDER BY created_at DESC LIMIT 12"

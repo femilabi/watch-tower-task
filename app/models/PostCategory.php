@@ -15,4 +15,11 @@ class PostCategory
         // Create a new instance of the Database class and assign it to $db
         $this->db = new Database();
     }
+
+    public function getById($id)
+    {
+        $this->db->query("SELECT * FROM " . self::table . " WHERE cate_id = :category_id");
+        $this->db->bind(':category_id', $id);
+        return $this->db->results();
+    }
 }

@@ -79,4 +79,10 @@ class AuthController extends Controller
         $client->addScope('profile');
         return $client;
     }
+
+    public function logout() {
+        setcookie('token', '', time() - 3600, "/");
+        header("Location: " . BASE_URL . "auth/login");
+        exit;
+    }
 }

@@ -23,10 +23,9 @@ use function App\Helpers\timeAgo;
     <section id="categories">
       <div class="container">
         <menu>
-          <a href="">Guest Blogging</a>
-          <a href="">Digital Marketing</a>
-          <a href="">Website Designing</a>
-          <a href="">Lifestyle</a>
+          <?php for ($i = 0; $i < count($post_categories); $i++): ?>
+            <a href=""><?= $post_categories[$i]["cate_name"] ?></a>
+          <?php endfor; ?>
           <button>
             <span>More</span>
             <svg width="16" height="16" viewBox="0 0 17 17">
@@ -44,7 +43,7 @@ use function App\Helpers\timeAgo;
     <section id="hero">
       <div class="container">
         <div class="featured">
-          <img src="<?= @$trending_posts[0]["post_image"] ?>" alt="<?= @$trending_posts[0]["post_title"] ?>" />
+          <img src="<?= $trending_posts[0]["post_image"] ?>" alt="<?= $trending_posts[0]["post_title"] ?>" />
           <header>
             <div class="view-count">
               <svg width="16" height="16">
@@ -54,10 +53,10 @@ use function App\Helpers\timeAgo;
               <span><?= number_format($trending_posts[0]["post_views"]) ?> Views</span>
             </div>
             <div class="author">
-              <img src="<?= @$trending_posts[0]["poster_avatar"] ?>"
-                alt="<?= @$trending_posts[0]["poster_firstname"] ?> <?= @$trending_posts[0]["poster_lastname"] ?>"
+              <img src="<?= $trending_posts[0]["poster_avatar"] ?>"
+                alt="<?= $trending_posts[0]["poster_firstname"] ?> <?= $trending_posts[0]["poster_lastname"] ?>"
                 width="32" height="32" />
-              <span><?= @$trending_posts[0]["poster_firstname"] ?> <?= @$trending_posts[0]["poster_lastname"] ?></span>
+              <span><?= $trending_posts[0]["poster_firstname"] ?> <?= $trending_posts[0]["poster_lastname"] ?></span>
             </div>
           </header>
           <div class="blog-details-wrapper">
@@ -66,9 +65,9 @@ use function App\Helpers\timeAgo;
                 <svg width="16" height="16">
                   <use href="<?= BASE_URL ?>app/views/assets/icons.svg#command" />
                 </svg>
-                <span><?= @$trending_posts[0]["post_category_name"] ?></span>
+                <span><?= $trending_posts[0]["post_category_name"] ?></span>
               </header>
-              <h1><?= @$trending_posts[0]["post_title"] ?></h1>
+              <h1><?= $trending_posts[0]["post_title"] ?></h1>
               <a href="">
                 <span>Start Reading</span>
                 <svg width="16" height="16" viewBox="0 0 20 20">
@@ -86,18 +85,18 @@ use function App\Helpers\timeAgo;
           <?php endif ?>
           <div class="blog-item">
             <div class="image-wrapper">
-              <img src="<?= @$post["post_image"] ?>" alt="<?= @$post["post_title"] ?>" width="323" height="166" />
+              <img src="<?= $post["post_image"] ?>" alt="<?= $post["post_title"] ?>" width="323" height="166" />
               <div class="time-category">
                 <span><?= timeAgo($post["created_at"]) ?></span>
-                <span><?= @$post["post_category_name"] ?></span>
+                <span><?= $post["post_category_name"] ?></span>
               </div>
             </div>
             <div class="content">
               <h2 class="line-clamp clamp-2">
-                <a href="<?= BASE_URL ?>post/<?= @$post["post_unique"] ?>"><?= @$post["post_title"] ?></a>
+                <a href="<?= BASE_URL ?>post/<?= $post["post_unique"] ?>"><?= $post["post_title"] ?></a>
               </h2>
               <p class="line-clamp clamp-3">
-                <?= @$post["post_description"] ?>
+                <?= $post["post_description"] ?>
               </p>
             </div>
           </div>
@@ -109,21 +108,21 @@ use function App\Helpers\timeAgo;
         <div class="blog-cards">
           <?php for ($i = 0; $i < count($latest_posts); $i++): ?>
             <div class="blog-card-item">
-              <img src="<?= @$latest_posts[$i]["post_image"] ?>" alt="<?= @$latest_posts[$i]["post_title"] ?>" width="244"
+              <img src="<?= $latest_posts[$i]["post_image"] ?>" alt="<?= $latest_posts[$i]["post_title"] ?>" width="244"
                 height="244" />
               <div class="content">
                 <header>
                   <svg width="16" height="16">
                     <use href="<?= BASE_URL ?>app/views/assets/icons.svg#command" />
                   </svg>
-                  <span><?= @$latest_posts[$i]["post_category_name"] ?></span>
+                  <span><?= $latest_posts[$i]["post_category_name"] ?></span>
                 </header>
                 <h2 class="line-clamp clamp-2">
                   <a
-                    href="<?= BASE_URL ?>post/<?= @$latest_posts[$i]["post_unique"] ?>"><?= @$latest_posts[$i]["post_title"] ?></a>
+                    href="<?= BASE_URL ?>post/<?= $latest_posts[$i]["post_unique"] ?>"><?= $latest_posts[$i]["post_title"] ?></a>
                 </h2>
                 <p class="line-clamp clamp-3">
-                  <?= @$latest_posts[$i]["post_description"] ?>
+                  <?= $latest_posts[$i]["post_description"] ?>
                 </p>
               </div>
             </div>
