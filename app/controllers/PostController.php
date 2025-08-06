@@ -13,8 +13,8 @@ class PostController extends Controller
 {
     public function index()
     {
-        $token_data = Auth::check();
-        $USER = $this->loadModel("User")->getUserById($token_data->id);
+        $auth_data = Auth::check();
+        $USER = $this->loadModel("User")->getUserById($auth_data->id);
         if (!$USER) {
             header('Location: ' . BASE_URL);
             exit;
@@ -26,8 +26,8 @@ class PostController extends Controller
     }
     public function addNewPost()
     {
-        $token_data = Auth::check();
-        $USER = $this->loadModel("User")->getUserById($token_data->id);
+        $auth_data = Auth::check();
+        $USER = $this->loadModel("User")->getUserById($auth_data->id);
         if (!$USER) {
             header('Location: ' . BASE_URL);
             exit;
@@ -88,8 +88,8 @@ class PostController extends Controller
 
     public function getPosts()
     {
-        $token_data = Auth::check();
-        $USER = $this->loadModel("User")->getUserById($token_data->id) ?? null;
+        $auth_data = Auth::check();
+        $USER = $this->loadModel("User")->getUserById($auth_data->id) ?? null;
         if (!$USER) {
             header('Location: ' . BASE_URL . 'dashboard/');
             exit;
