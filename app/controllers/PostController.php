@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Core\Auth;
-use App\Models\User;
+use App\Models\Post;
 use function App\Helpers\getCurrentUrl;
 use function App\Helpers\getSlug;
 use function App\Helpers\purifyHtml;
@@ -14,7 +14,7 @@ class PostController extends Controller
     public function index()
     {
         $token_data = Auth::check();
-        $USER = (new User())->getUserById($token_data->id);
+        $USER = $this->loadModel("User")->getUserById($token_data->id);
         if (!$USER) {
             header('Location: ' . BASE_URL);
             exit;
@@ -27,7 +27,7 @@ class PostController extends Controller
     public function addNewPost()
     {
         $token_data = Auth::check();
-        $USER = (new User())->getUserById($token_data->id);
+        $USER = $this->loadModel("User")->getUserById($token_data->id);
         if (!$USER) {
             header('Location: ' . BASE_URL);
             exit;
@@ -66,7 +66,7 @@ class PostController extends Controller
 
             // Save post data
             $validation["data"]["content"] = purifyHtml($_POST['content']);
-            $validation["data"]["post_unique"] = getSlug($validation["data"]["post_title"], 'posts');
+            $validation["data"]["post_unique"] = getSlug($validation["data"]["post_title"], Post::table);
             $post_id = $this->loadModel('Post')->addNewPost($USER["id"], $validation["data"]);
 
             // Create post meta
@@ -89,7 +89,7 @@ class PostController extends Controller
     public function getPosts()
     {
         $token_data = Auth::check();
-        $USER = (new User())->getUserById($token_data->id) ?? null;
+        $USER = $this->loadModel("User")->getUserById($token_data->id) ?? null;
         if (!$USER) {
             header('Location: ' . BASE_URL . 'dashboard/');
             exit;
