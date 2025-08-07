@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Core\Database;
 use App\Core\JWT;
 use Google_Client;
 use Google_Service_Oauth2;
@@ -58,7 +59,7 @@ class AuthController extends Controller
         $oauth = new Google_Service_Oauth2($client);
         $userInfo = $oauth->userinfo->get();
 
-        $userModel = $this->loadModel('User');
+        $userModel = Database::loadModel('User');
         $user = $userModel->findOrCreate($userInfo);
         $jwt = JWT::create([
             'id' => $user['id'],

@@ -1,23 +1,11 @@
 <?php
 namespace App\Core;
-use App\Core\JWT;
 
 // Define the Controller class
 class Controller
 {
     // Default layout file
     protected $layout = 'home';
-    // Method to load a model
-    // Takes the model name as a parameter
-
-    // This will load the model from the models directory
-    protected function loadModel($model)
-    {
-        // Include the model file from the models directory
-        $modelClass = 'App\\Models\\' . $model;
-        // Instantiate and return the model object
-        return new $modelClass;
-    }
 
     // Method to render a view
     // Takes the view path, data array, and optional title as parameters

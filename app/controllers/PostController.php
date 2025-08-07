@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Core\Auth;
+use App\Core\Database;
 use App\Models\Post;
 use function App\Helpers\getCurrentUrl;
 use function App\Helpers\getSlug;
@@ -14,20 +15,21 @@ class PostController extends Controller
     public function index()
     {
         $auth_data = Auth::check();
-        $USER = $this->loadModel("User")->getUserById($auth_data->id);
+        $USER = Database::loadModel("User")->getUserById($auth_data->id);
         if (!$USER) {
             header('Location: ' . BASE_URL);
             exit;
         }
 
-        $posts = $this->loadModel('Post')->getAllPostsByUser($USER["id"]);
+        $posts = Database::loadModel('Post')->getAllPostsByUser($USER["id"]);
         $this->setLayout('dashboard/index');
         $this->renderView('', ['user' => $USER, 'posts' => $posts], "Dashboard - Home");
     }
+
     public function addNewPost()
     {
         $auth_data = Auth::check();
-        $USER = $this->loadModel("User")->getUserById($auth_data->id);
+        $USER = Database::loadModel("User")->getUserById($auth_data->id);
         if (!$USER) {
             header('Location: ' . BASE_URL);
             exit;
@@ -45,7 +47,7 @@ class PostController extends Controller
             }
 
             // Check if post category is valid
-            $post_category = $this->loadModel("PostCategory")->getById($validation["data"]["post_category"]);
+            $post_category = Database::loadModel("PostCategory")->getById($validation["data"]["post_category"]);
             if (!$post_category) {
                 header('Location: ' . getCurrentUrl() . '?error=' . urlencode('Post category not found.'));
                 exit;
@@ -67,16 +69,16 @@ class PostController extends Controller
             // Save post data
             $validation["data"]["content"] = purifyHtml($_POST['content']);
             $validation["data"]["post_unique"] = getSlug($validation["data"]["post_title"], Post::table);
-            $post_id = $this->loadModel('Post')->addNewPost($USER["id"], $validation["data"]);
+            $post_id = Database::loadModel('Post')->addNewPost($USER["id"], $validation["data"]);
 
             // Create post meta
-            $this->loadModel('PostMeta')->addPostMeta($post_id, $validation["data"]);
+            Database::loadModel('PostMeta')->addPostMeta($post_id, $validation["data"]);
 
             header('Location: ' . BASE_URL);
             exit;
         }
 
-        $categories = $this->loadModel('Post')->getAllCategories();
+        $categories = Database::loadModel('Post')->getAllCategories();
         $this->renderView('', ["user" => $USER, "categories" => $categories], "Dashboard - Create Post");
     }
 
@@ -89,13 +91,13 @@ class PostController extends Controller
     public function getPosts()
     {
         $auth_data = Auth::check();
-        $USER = $this->loadModel("User")->getUserById($auth_data->id) ?? null;
+        $USER = Database::loadModel("User")->getUserById($auth_data->id) ?? null;
         if (!$USER) {
             header('Location: ' . BASE_URL . 'dashboard/');
             exit;
         }
 
-        $posts = $this->loadModel('Post')->getAllPostsByUser($USER->id);
+        $posts = Database::loadModel('Post')->getAllPostsByUser($USER->id);
         $this->renderView('dashboard/posts', ['user' => $USER, 'posts' => $posts], "Dashboard - Posts");
     }
 
@@ -147,5 +149,4 @@ class PostController extends Controller
 
         return ['data' => $cleanData];
     }
-
 }

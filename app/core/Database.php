@@ -87,4 +87,11 @@ class Database
     {
         return $this->dbh->lastInsertId();
     }
+
+    // This will load the model from the models directory
+    static function loadModel($model)
+    {
+        $modelClass = 'App\\Models\\' . $model;
+        return new $modelClass;
+    }
 }
